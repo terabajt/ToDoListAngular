@@ -38,6 +38,7 @@ export class AppComponent {
         date: new Date().toDateString(),
       };
     }, 500);
+    this.sortTask();
   }
   clearTasks() {
     this.tasks = [];
@@ -51,8 +52,24 @@ export class AppComponent {
     };
     this.tasks.push(task);
     (this.taskName = ''), (this.taskDate = '');
+    this.sortTask();
   }
   switchEditMode() {
     this.editMode = !this.editMode;
   }
+
+  markTaskAsDone(task: Task) {
+    task.done = true;
+    this.sortTask();
+  }
+
+  deleteTask(task: Task) {
+    this.tasks = this.tasks.filter( e => e !== task);
+    this.sortTask();
+  }
+
+  private sortTask() {
+    this.tasks = this.tasks.sort((a: Task, b: Task) =>
+    a.done === b.done ? 0: a.done ? 1: -1)
+  };
 }
